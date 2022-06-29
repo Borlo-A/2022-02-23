@@ -2,7 +2,7 @@ package it.polito.tdp.yelp.model;
 
 import java.time.LocalDate;
 
-public class Review {
+public class Review implements Comparable<Review>{
 	private String reviewId;
 	private String businessId;
 	private String userId;
@@ -126,7 +126,12 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return reviewId;
+		return reviewId +"   ---   " + date + "\n";
+	}
+
+	@Override
+	public int compareTo(Review o) {
+		return this.getDate().compareTo(o.getDate());
 	}
 
 	

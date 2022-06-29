@@ -5,13 +5,13 @@
 package it.polito.tdp.yelp;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.ResourceBundle;
 
 import it.polito.tdp.yelp.model.Business;
 import it.polito.tdp.yelp.model.Model;
-import it.polito.tdp.yelp.model.Review;
+
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -48,18 +48,22 @@ public class FXMLController {
     	this.cmbLocale.getItems().clear();
     	String citta = this.cmbCitta.getValue();
     	if(citta != null) {
-    		//TODO popolare la tendina dei locali per la città selezionata
-    		
+    		this.cmbLocale.setItems(FXCollections.observableArrayList(this.model.getBusinessByCity(citta)));
     	}
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-    	
+    	Business business = this.cmbLocale.getValue();
+    	this.model.creaGrafo(business);
+    	this.txtResult.setText("Grafo creato correttamente (si spera).\nVertici: " + this.model.getSizeVertici()+ "\nArchi: " + this.model.getSizeArchi() + "\n");
+    	//this.txtResult.setText(this.model.getReviewsByBusiness(business).toString());
+    	this.txtResult.appendText("\n" + this.model.getDaStampare().toString());
     }
 
     @FXML
     void doTrovaMiglioramento(ActionEvent event) {
+    	txtResult.appendText("\n\n" + this.model.calcolaPercorso());
     	
     }
 
@@ -75,5 +79,6 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	this.cmbCitta.setItems(FXCollections.observableArrayList(this.model.getCities()));
     }
 }
